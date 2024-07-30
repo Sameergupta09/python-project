@@ -11,6 +11,10 @@ def check_winner():
             messagebox.showinfo("Tic-Tac-Toe", f"Player {buttons[combo[0]]['text']} wins!")
             winner = True
             return
+    
+    if all(button["text"] != "" for button in buttons):
+        messagebox.showinfo("Tic-Tac-Toe", "It's a tie!")
+        reset_game()
 
 def button_click(index):
     if buttons[index]["text"] == "" and not winner:
@@ -22,6 +26,14 @@ def button_click(index):
 def toggle_player():
     global current_player
     current_player = "X" if current_player == "O" else "O"
+    label.config(text=f"Player {current_player}'s turn")
+
+def reset_game():
+    global current_player, winner
+    for button in buttons:
+        button.config(text="", bg="SystemButtonFace")
+    current_player = "X"
+    winner = False
     label.config(text=f"Player {current_player}'s turn")
 
 root = tk.Tk()
@@ -36,5 +48,8 @@ current_player = "X"
 winner = False
 label = tk.Label(root, text=f"Player {current_player}'s turn", font=("normal", 16))
 label.grid(row=3, column=0, columnspan=3)
+
+reset_button = tk.Button(root, text="Reset", font=("normal", 16), command=reset_game)
+reset_button.grid(row=4, column=0, columnspan=3)
 
 root.mainloop()
